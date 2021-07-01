@@ -10,7 +10,7 @@ import {
   Dimensions,
 } from "react-native";
 import { Calendar, Agenda } from "react-native-calendars";
-// import * as ScreenOrientation from "expo-screen-orientation";
+import AgendaView from "../Partials/Calendar/AgendaView";
 
 const CalendarView = ({ navigation }) => {
   const isPortrait = () => {
@@ -39,7 +39,7 @@ const CalendarView = ({ navigation }) => {
 
   // const loadItems = (day) => {
   //   setTimeout(() => {
-  //     for (let i = -15; i < 85; i++) {
+  //     for (let i = -15; i < 25; i++) {
   //       const time = day.timestamp + i * 24 * 60 * 60 * 1000;
   //       const strTime = timeToString(time);
   //       if (!items[strTime]) {
@@ -57,39 +57,39 @@ const CalendarView = ({ navigation }) => {
   //     Object.keys(items).forEach((key) => {
   //       newItems[key] = items[key];
   //     });
-  //     console.log(newItems);
-  //     // setItems(newItems);
+  //     // console.log(newItems);
+  //     setItems(newItems);
   //   }, 1000);
   // };
 
-  const renderItem = (item) => {
-    return (
-      <TouchableOpacity
-        style={styles.item}
-        onPress={() => Alert.alert(item.name)}
-      >
-        <Text>{item.name}</Text>
-      </TouchableOpacity>
-    );
-  };
+  // const renderItem = (item) => {
+  //   return <Text>{item.name}</Text>;
+  // };
+  // const renderEmptyItem = (date) => {
+  //   const emptyDate = new Date(date).toUTCString().split("T")[0];
 
-  const renderEmptyItem = () => {
-    return (
-      <TouchableOpacity style={styles.emptyDate}>
-        <Text>No event.</Text>
-      </TouchableOpacity>
-    );
-  };
+  //   return (
+  //     <TouchableOpacity style={styles.emptyDate}>
+  //       <Text>No event. {emptyDate}</Text>
+  //     </TouchableOpacity>
+  //   );
+  // };
   function formatDate() {
     var d = new Date(),
       month = "" + (d.getMonth() + 1),
       day = "" + d.getDate(),
-      year = d.getFullYear();
+      year = d.getFullYear(),
+      timestamp = d.getTime();
 
     if (month.length < 2) month = "0" + month;
     if (day.length < 2) day = "0" + day;
-
-    return [year, month, day].join("-");
+    return {
+      dateString: [year, month, day].join("-"),
+      day,
+      month,
+      timestamp,
+      year,
+    };
   }
   return (
     <ScrollView>
@@ -137,23 +137,52 @@ const CalendarView = ({ navigation }) => {
           <View
             style={{ flex: orientation === "portrait" ? 1 : 4, margin: 10 }}
           >
-            <Agenda
+            <AgendaView date={selectedDate} />
+            {/* <Agenda
+              renderEmptyData={() => {
+                return (
+                  <View>
+                    <Text> </Text>
+                  </View>
+                );
+              }}
               renderEmptyDate={renderEmptyItem}
               // Specify how agenda knob should look like
-              // loadItemsForMonth={loadItems}
-              // items={items}
+              loadItemsForMonth={loadItems}
+              items={items}
               renderItem={renderItem}
               selected={selectedDate?.dateString}
-              items={{
-                "2021-06-22": [{ name: "item 1 - any js object" }],
-                "2021-06-23": [{ name: "item 2 - any js object", height: 80 }],
-                "2021-06-24": [],
-                "2021-06-25": [
-                  { name: "item 3 - any js object" },
-                  { name: "any js object" },
-                ],
-              }}
-            />
+              // items={{
+              //   "2021-06-22": [{ name: "item 1 - any js object" }],
+              //   "2021-06-23": [{ name: "item 2 - any js object", height: 80 }],
+              //   "2021-06-24": [],
+              //   "2021-06-25": [
+              //     { name: "item 3 - any js object" },
+              //     { name: "any js object" },
+              //   ],
+              //   "2021-06-26": [{ name: "item 1 - any js object" }],
+              //   "2021-06-27": [{ name: "item 2 - any js object", height: 80 }],
+              //   "2021-06-28": [],
+              //   "2021-06-29": [
+              //     { name: "item 3 - any js object" },
+              //     { name: "any js object" },
+              //   ],
+              //   "2021-06-30": [{ name: "item 1 - any js object" }],
+              //   "2021-07-1": [],
+              //   "2021-07-24": [],
+              //   "2021-07-25": [
+              //     { name: "item 3 - any js object" },
+              //     { name: "any js object" },
+              //   ],
+              //   "2021-07-22": [],
+              //   "2021-07-23": [{ name: "item 2 - any js object", height: 80 }],
+              //   "2021-07-24": [],
+              //   "2021-07-25": [
+              //     { name: "item 3 - any js object" },
+              //     { name: "any js object" },
+              //   ],
+              // }}
+            /> */}
           </View>
         )}
       </View>
