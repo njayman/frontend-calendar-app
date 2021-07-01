@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import { Calendar, Agenda } from "react-native-calendars";
+import { Calendar } from "react-native-calendars";
 import AgendaView from "../Partials/Calendar/AgendaView";
 
 const CalendarView = ({ navigation }) => {
