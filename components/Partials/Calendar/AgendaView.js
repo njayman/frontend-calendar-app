@@ -81,13 +81,13 @@ const AgendaView = (date) => {
   console.log(date);
   return (
     <View>
-      {/* <EventCalendar
+      <EventCalendar
         // eventTapped={this._eventTapped.bind(this)}
         styles={styles}
         events={events}
         width={width}
         initDate={date.dateSting}
-      /> */}
+      />
     </View>
   );
 };
