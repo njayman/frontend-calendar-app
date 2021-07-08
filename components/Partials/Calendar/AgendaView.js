@@ -1,101 +1,57 @@
-import React, { useState } from "react";
-import { Dimensions, Platform, StyleSheet, View } from "react-native";
-import EventCalendar from "react-native-events-calendar";
-let { width } = Dimensions.get("window");
+import React, { useState, createRef, useEffect } from "react";
+import { Platform, StyleSheet, View } from "react-native";
+import WeekView from "react-native-week-view";
 
-const AgendaView = (date) => {
+const AgendaView = ({ date }) => {
+  let weekViewRef;
+  const generateDates = (hours, minutes) => {
+    const date = new Date();
+    date.setHours(date.getHours() + hours);
+    if (minutes != null) {
+      date.setMinutes(minutes);
+    }
+    return date;
+  };
+  useEffect(() => {
+    // console.log(weekViewRef);
+    weekViewRef?.goToDate(new Date(date.year, date.month, date.day));
+  }, [date]);
   const [events] = useState([
     {
-      start: "2021-07-03 00:30:00",
-      end: "2017-07-07 01:30:00",
-      title: "Dr. Mariana Joseph",
-      summary: "3412 Piedmont Rd NE, GA 3032",
+      id: 1,
+      description: "Event 1",
+      startDate: generateDates(0),
+      endDate: generateDates(2),
+      color: "blue",
     },
     {
-      start: "2021-07-03 01:30:00",
-      end: "2017-07-07 02:20:00",
-      title: "Dr. Mariana Joseph",
-      summary: "3412 Piedmont Rd NE, GA 3032",
+      id: 2,
+      description: "Event 2",
+      startDate: generateDates(1),
+      endDate: generateDates(4),
+      color: "red",
     },
     {
-      start: "2021-07-02 04:10:00",
-      end: "2017-07-07 04:40:00",
-      title: "Dr. Mariana Joseph",
-      summary: "3412 Piedmont Rd NE, GA 3032",
-    },
-    {
-      start: "2021-07-02 01:05:00",
-      end: "2017-07-07 01:45:00",
-      title: "Dr. Mariana Joseph",
-      summary: "3412 Piedmont Rd NE, GA 3032",
-    },
-    {
-      start: "2021-07-01 14:30:00",
-      end: "2017-07-07 16:30:00",
-      title: "Dr. Mariana Joseph",
-      summary: "3412 Piedmont Rd NE, GA 3032",
-    },
-    {
-      start: "2021-07-01 01:20:00",
-      end: "2017-07-08 02:20:00",
-      title: "Dr. Mariana Joseph",
-      summary: "3412 Piedmont Rd NE, GA 3032",
-    },
-    {
-      start: "2021-07-01 04:10:00",
-      end: "2017-07-08 04:40:00",
-      title: "Dr. Mariana Joseph",
-      summary: "3412 Piedmont Rd NE, GA 3032",
-    },
-    {
-      start: "2021-07-08 00:45:00",
-      end: "2017-07-08 01:45:00",
-      title: "Dr. Mariana Joseph",
-      summary: "3412 Piedmont Rd NE, GA 3032",
-    },
-    {
-      start: "2021-07-03 11:30:00",
-      end: "2017-07-08 12:30:00",
-      title: "Dr. Mariana Joseph",
-      summary: "3412 Piedmont Rd NE, GA 3032",
-    },
-    {
-      start: "2021-07-02 01:30:00",
-      end: "2017-07-09 02:00:00",
-      title: "Dr. Mariana Joseph",
-      summary: "3412 Piedmont Rd NE, GA 3032",
-    },
-    {
-      start: "2021-07-02 03:10:00",
-      end: "2017-07-09 03:40:00",
-      title: "Dr. Mariana Joseph",
-      summary: "3412 Piedmont Rd NE, GA 3032",
-    },
-    {
-      start: "2021-07-01 00:10:00",
-      end: "2017-07-09 01:45:00",
-      title: "Dr. Mariana Joseph",
-      summary: "3412 Piedmont Rd NE, GA 3032",
+      id: 3,
+      description: "Event 3",
+      startDate: generateDates(-5),
+      endDate: generateDates(-3),
+      color: "green",
     },
   ]);
   console.log(date);
   return (
-    <View>
-      <EventCalendar
-        // eventTapped={this._eventTapped.bind(this)}
-        styles={styles}
+    <View style={{ flex: 1 }}>
+      <WeekView
+        ref={(ref) => (weekViewRef = ref)}
         events={events}
-        width={width}
-        initDate={date.dateSting}
+        selectedDate={new Date(date.year, date.month, date.day)}
+        numberOfDays={1}
       />
     </View>
   );
 };
 
-export default AgendaView;
+const styles = StyleSheet.create({});
 
-const styles = StyleSheet.create({
-  timeLabel: {
-    fontFamily: Platform.OS === "ios" ? "Helvetica Neue" : "Roboto",
-  },
-});
+export default AgendaView;

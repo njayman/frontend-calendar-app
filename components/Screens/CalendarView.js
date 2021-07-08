@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -21,59 +21,18 @@ const CalendarView = ({ navigation }) => {
     isPortrait() ? "portrait" : "landscape"
   );
 
-  // Event Listener for orientation changes
-  Dimensions.addEventListener("change", () => {
-    setOrientation(isPortrait() ? "portrait" : "landscape");
-  });
+  useEffect(() => {
+    Dimensions.addEventListener("change", () => {
+      setOrientation(isPortrait() ? "portrait" : "landscape");
+    });
+  }, [Dimensions]);
+
   const [showAgenda, setShowAgenda] = useState();
-  // const [items, setItems] = useState({});
   const [selectedDate, setSelectedDate] = useState(formatDate());
   const toggleShowAgenda = () => {
     setShowAgenda((prevState) => !prevState);
   };
 
-  // const timeToString = (time) => {
-  //   const date = new Date(time);
-  //   return date.toISOString().split("T")[0];
-  // };
-
-  // const loadItems = (day) => {
-  //   setTimeout(() => {
-  //     for (let i = -15; i < 25; i++) {
-  //       const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-  //       const strTime = timeToString(time);
-  //       if (!items[strTime]) {
-  //         items[strTime] = [];
-  //         const numItems = Math.floor(Math.random() * 3 + 1);
-  //         for (let j = 0; j < numItems; j++) {
-  //           items[strTime].push({
-  //             name: "Item for " + strTime + " #" + j,
-  //             height: Math.max(50, Math.floor(Math.random() * 150)),
-  //           });
-  //         }
-  //       }
-  //     }
-  //     const newItems = {};
-  //     Object.keys(items).forEach((key) => {
-  //       newItems[key] = items[key];
-  //     });
-  //     // console.log(newItems);
-  //     setItems(newItems);
-  //   }, 1000);
-  // };
-
-  // const renderItem = (item) => {
-  //   return <Text>{item.name}</Text>;
-  // };
-  // const renderEmptyItem = (date) => {
-  //   const emptyDate = new Date(date).toUTCString().split("T")[0];
-
-  //   return (
-  //     <TouchableOpacity style={styles.emptyDate}>
-  //       <Text>No event. {emptyDate}</Text>
-  //     </TouchableOpacity>
-  //   );
-  // };
   function formatDate() {
     var d = new Date(),
       month = "" + (d.getMonth() + 1),
@@ -131,58 +90,11 @@ const CalendarView = ({ navigation }) => {
             }}
           />
         </View>
-        {/* <Text>{orientation}</Text> */}
-        {/* <Text>{JSON.stringify(selectedDate)}</Text> */}
         {showAgenda && (
           <View
-            style={{ flex: orientation === "portrait" ? 1 : 4, margin: 10 }}
+            style={{ flex: orientation === "portrait" ? 1 : 3, margin: 10 }}
           >
             <AgendaView date={selectedDate} />
-            {/* <Agenda
-              renderEmptyData={() => {
-                return (
-                  <View>
-                    <Text> </Text>
-                  </View>
-                );
-              }}
-              renderEmptyDate={renderEmptyItem}
-              // Specify how agenda knob should look like
-              loadItemsForMonth={loadItems}
-              items={items}
-              renderItem={renderItem}
-              selected={selectedDate?.dateString}
-              // items={{
-              //   "2021-06-22": [{ name: "item 1 - any js object" }],
-              //   "2021-06-23": [{ name: "item 2 - any js object", height: 80 }],
-              //   "2021-06-24": [],
-              //   "2021-06-25": [
-              //     { name: "item 3 - any js object" },
-              //     { name: "any js object" },
-              //   ],
-              //   "2021-06-26": [{ name: "item 1 - any js object" }],
-              //   "2021-06-27": [{ name: "item 2 - any js object", height: 80 }],
-              //   "2021-06-28": [],
-              //   "2021-06-29": [
-              //     { name: "item 3 - any js object" },
-              //     { name: "any js object" },
-              //   ],
-              //   "2021-06-30": [{ name: "item 1 - any js object" }],
-              //   "2021-07-1": [],
-              //   "2021-07-24": [],
-              //   "2021-07-25": [
-              //     { name: "item 3 - any js object" },
-              //     { name: "any js object" },
-              //   ],
-              //   "2021-07-22": [],
-              //   "2021-07-23": [{ name: "item 2 - any js object", height: 80 }],
-              //   "2021-07-24": [],
-              //   "2021-07-25": [
-              //     { name: "item 3 - any js object" },
-              //     { name: "any js object" },
-              //   ],
-              // }}
-            /> */}
           </View>
         )}
       </View>
@@ -193,9 +105,6 @@ const CalendarView = ({ navigation }) => {
 export default CalendarView;
 
 const styles = StyleSheet.create({
-  container: {
-    margin: 10,
-  },
   button: {
     margin: 10,
     borderRadius: 10,
@@ -209,18 +118,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-  },
-  item: {
-    backgroundColor: "white",
-    flex: 1,
-    borderRadius: 5,
-    padding: 10,
-    marginRight: 10,
-    marginTop: 17,
-  },
-  emptyDate: {
-    height: 15,
-    flex: 1,
-    paddingTop: 30,
   },
 });
